@@ -72,8 +72,8 @@ def gen_playlist(sentiment, location):
 
 
 # a bunch of random test calls, feel free to remove -pkuz (NOTE: you need to load_creds() before working w/ any function)
-load_creds()
-location = 'boston'
-weather = get_weather(location)
-sentiment = sentiment(weather)
-print(gen_playlist(sentiment, location))
+# load_creds()
+# location = 'boston'
+# weather = get_weather(location)
+# sentiment = sentiment(weather)
+# print(gen_playlist(sentiment, location))
