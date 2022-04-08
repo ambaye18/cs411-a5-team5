@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 export default function UserForm() {
     const [location, setLocation] = useState('');
-    const [data, setData] = useState({});
+    const [data, setData] = useState({location:null,weather:null,sentiment:null,playlist:null});
     const axios = require('axios');
 
     const handleSubmit = (e) => {
@@ -18,10 +18,10 @@ export default function UserForm() {
                 'Content-Type':'application/json'
             },
         }).then(resp => {
-            document.getElementById('location').innerHTML = resp.data.location;
-            document.getElementById('weather').innerHTML = resp.data.weather;
-            document.getElementById('sentiment').innerHTML = resp.data.sentiment;
-            document.getElementById('playlist').innerHTML = resp.data.playlist;
+            setData({location:resp.data.location,
+                weather:resp.data.weather[1]+'°F',
+                sentiment: Math.round(100*resp.data.sentiment)/100,
+                playlist:resp.data.playlist});
 
             console.log(resp.data);
         })
@@ -37,24 +37,12 @@ export default function UserForm() {
                 <input type="submit" />
             </form>
             <br></br>
-            {data ? 
-            <div>
-                <div style={{textAlign: 'center'}}>
-                    <div style={{display: 'inline'}}>Current location: </div>
-                    <div style={{display: 'inline'}} id="location"></div>
-                </div>
-                <div style={{textAlign: 'center'}}>
-                    <div style={{display: 'inline'}}>Weather: </div>
-                    <div style={{display: 'inline'}} id="weather"></div>
-                </div>
-                <div style={{textAlign: 'center'}}>
-                    <div style={{display: 'inline'}}>Sentiment Val: </div>
-                    <div style={{display: 'inline'}} id="sentiment"></div>
-                </div>
-                <div style={{textAlign: 'center'}}>
-                    <div style={{display: 'inline'}}>Playlist: </div>
-                    <div style={{display: 'inline'}} id="playlist"></div>
-                </div>
+            {data.location ? 
+            <div style={{textAlign: 'center'}}>
+                <h3>Current location: {data.location}</h3>
+                <h3>Current weather: {data.weather}</h3>
+                <h3>Sentiment Value (0-1): {data.sentiment}</h3>
+                <h3>Generated playlist: <a href={data.playlist} target='_blank'>{data.playlist}</a></h3>
             </div>
             : <></>}
         </div>
