@@ -45,7 +45,7 @@ def sentiment(weather):
     # WILL BE DONE ACCORDING TO: https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2
 
     # normalizing temperature to scale btwn -1 and 1 -> historically lowest temp recorded was -128.6F; highest was 136F
-    normalized_temp = (2 * ((temp - -128.6) / (136 - -128.6))) - 1
+    normalized_temp = ((temp - -128.6) / (136 - -128.6))
     
     # ULTIMATELY, FINAL SENTIMENT WILL BE AVERAGE OF VALENCE FROM WEATHER ID AND TEMPERATURE
     return normalized_temp
@@ -72,8 +72,8 @@ def gen_playlist(sentiment, location):
 
 
 # a bunch of random test calls, feel free to remove -pkuz (NOTE: you need to load_creds() before working w/ any function)
-load_creds()
-location = 'boston'
-weather = get_weather(location)
-sentiment = sentiment(weather)
-print(gen_playlist(sentiment, location))
+# load_creds()
+# location = 'boston'
+# weather = get_weather(location)
+# sentiment = sentiment(weather)
+# print(gen_playlist(sentiment, location))
