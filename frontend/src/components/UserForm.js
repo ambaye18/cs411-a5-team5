@@ -18,6 +18,10 @@ export default function UserForm() {
                 'Content-Type':'application/json'
             },
         }).then(resp => {
+            document.getElementById('location').innerHTML = resp.data.location;
+            document.getElementById('weather').innerHTML = resp.data.weather;
+            document.getElementById('sentiment').innerHTML = resp.data.sentiment;
+            document.getElementById('playlist').innerHTML = resp.data.playlist;
 
             console.log(resp.data);
         })
@@ -35,10 +39,22 @@ export default function UserForm() {
             <br></br>
             {data ? 
             <div>
-                <p>Current location: {data.location}</p>
-                <p>Weather: {data.weather}</p>
-                <p>Sentiment Val: {data.sentiment}</p>
-                <p>Playlists: {data.playlists}</p>
+                <div style={{textAlign: 'center'}}>
+                    <div style={{display: 'inline'}}>Current location: </div>
+                    <div style={{display: 'inline'}} id="location"></div>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <div style={{display: 'inline'}}>Weather: </div>
+                    <div style={{display: 'inline'}} id="weather"></div>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <div style={{display: 'inline'}}>Sentiment Val: </div>
+                    <div style={{display: 'inline'}} id="sentiment"></div>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                    <div style={{display: 'inline'}}>Playlist: </div>
+                    <div style={{display: 'inline'}} id="playlist"></div>
+                </div>
             </div>
             : <></>}
         </div>
