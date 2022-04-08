@@ -10,6 +10,7 @@ export default function UserForm() {
         // add response headers to fix this?
         fetch('http://localhost:5000/api/search/' + location,
             {
+            mode: 'no-cors',
             method: 'GET',
             origin: 'http://localhost:3000',
             headers : {

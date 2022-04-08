@@ -1,9 +1,9 @@
 from flask_cors import CORS, cross_origin
-from backend.api_calls import load_creds, get_weather, sentiment, gen_playlist
-from backend.app import create_app
+from api_calls import load_creds, get_weather, sentiment, gen_playlist
+# from app import create_app
 from flask import Flask, jsonify
 
-app = create_app()
+app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
 # app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
 # cors = CORS(app, support_credentials=True, resources={r"/api/*": {"origins": "*"}})
 
