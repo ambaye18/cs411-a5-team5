@@ -6,23 +6,19 @@ export default function UserForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // This API call is currently failing due to CORS cross-origin issue
+        // add response headers to fix this?
         fetch('http://localhost:5000/api/search/' + location,
             {
-            'method': 'GET',
-            'mode': 'cors',
-            'credentials': 'include',
-            'origin': 'http://localhost:3000',
-            'headers' : {
+            method: 'GET',
+            origin: 'http://localhost:3000',
+            headers : {
                 'Content-Type':'application/json'
-            }
+            },
         })
         .then(res => {
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-            res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
             console.log(res.json);
-            res.json();
-        })
+            res.json()})
         .then(data => {
             setData(data);
             console.log(data);
