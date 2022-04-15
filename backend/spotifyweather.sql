@@ -18,7 +18,7 @@ CREATE TABLE Playlists (
         ON DELETE CASCADE,
 	link VARCHAR(255) NOT NULL,
     location VARCHAR(255),
-    temp INT,
+    temp FLOAT,
     weather_condition VARCHAR(255),
     sentiment FLOAT
     );
