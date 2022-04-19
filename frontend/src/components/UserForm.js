@@ -40,7 +40,7 @@ export default function UserForm() {
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formLocation">
                     <Form.Label>Enter a location</Form.Label>
-                    <Form.Control required type="text" placeholder="e.g., Boston" value={location} onChange={(e) => setLocation(e.target.value)}/>
+                    <Form.Control className="formInput" required type="text" placeholder="e.g., Boston" value={location} onChange={(e) => setLocation(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="formSubmit" className="btnSubmit">
                     <Form.Control type="submit" value="Submit"/>
@@ -50,10 +50,10 @@ export default function UserForm() {
             <br></br>
             {data.location ? 
             <div style={{textAlign: 'center'}}>
-                <h3>Current location: {data.location}</h3>
-                <h3>Current weather: {data.weather}</h3>
-                <h3>Sentiment Value (0-1): {data.sentiment}</h3>
-                <h3>Generated playlist: <a href={data.playlist} target='_blank'>{data.playlist}</a></h3>
+                <p>Current location: {data.location}</p>
+                <p>Current weather: {data.weather}</p>
+                <p>Sentiment Value (0-1): {data.sentiment}</p>
+                <p>Generated playlist: <a href={data.playlist} target='_blank'>{data.playlist}</a></p>
             </div>
             :
             (loading ? <Spinner animation="border" variant="primary" /> : null)
