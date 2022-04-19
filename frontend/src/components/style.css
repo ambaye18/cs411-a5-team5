@@ -1,0 +1,17 @@
+.form {
+    width: 50vw;
+    margin: 0 auto;
+    margin-top: 5vh;
+    padding-top: 2vh;
+    padding-bottom: 1vh;
+    padding-left: 10%;
+    padding-right: 10%;
+    border: 1px solid rgb(55, 55, 55);
+    border-radius: 5px;
+}
+
+.btnSubmit {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 3vh;
+}

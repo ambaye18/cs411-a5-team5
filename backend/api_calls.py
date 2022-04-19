@@ -30,6 +30,7 @@ def get_weather(location):
         # making call to openweather api
         url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&units=imperial&exclude=hourly,daily,minutely,alerts&APPID=' + WEATHER_KEY
         resp = requests.get(url).json()['current']
+        print(resp)
     except:
         return 'INVALID'
 
