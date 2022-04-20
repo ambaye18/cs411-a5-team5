@@ -4,8 +4,6 @@ from api_calls import load_creds, get_weather, sentiment, gen_playlist
 from flask import Flask, jsonify
 
 app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
-# app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
-# cors = CORS(app, support_credentials=True, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/')
 def test():
