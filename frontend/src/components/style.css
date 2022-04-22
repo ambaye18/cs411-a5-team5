@@ -1,3 +1,4 @@
+/** UserForm **/
 .form {
     width: 50vw;
     margin: 0 auto;
@@ -16,11 +17,21 @@
     margin-top: 3vh;
 }
 
+/** Navbar **/
 a.nav-link {
     color: rgb(255, 255, 255) !important;
-    margin-left: 5%;
+    display:inline-table;
 }
 
 a.navbar-brand {
     color: rgb(255, 255, 255) !important;
+    margin-right: 5%;
+}
+
+.navContainer {
+    margin-left: 3%;
+}
+.navIcon {
+    margin-right: 2%;
+    display:inline;
 }

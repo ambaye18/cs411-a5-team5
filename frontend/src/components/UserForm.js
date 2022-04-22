@@ -13,8 +13,6 @@ export default function UserForm() {
         setData({location:null,weather:null,sentiment:null,playlist:null});
         setLoading(true);
         e.preventDefault();
-        // This API call is currently failing due to CORS cross-origin issue
-        // add response headers to fix this?
         axios.get('http://127.0.0.1:5000/api/search/' + location,
             {
             mode: 'no-cors',
@@ -24,13 +22,15 @@ export default function UserForm() {
                 'Content-Type':'application/json'
             },
         }).then(resp => {
+            console.log(resp.data);
+            // setting resp data in this component for now, but
+            // data will be passed to WeatherResult component in the future
             setData({location:resp.data.location,
                 weather:resp.data.weather[1]+'°F',
                 sentiment: Math.round(100*resp.data.sentiment)/100,
                 playlist:resp.data.playlist});
             setLoading(false);
 
-            console.log(resp.data);
         })
         .catch(err => console.log(err));
     }

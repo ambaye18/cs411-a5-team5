@@ -1,2 +1,5 @@
-config.json
+config.py
+client_secret.json
 ws/
+__pycache__/
+.cache-411project/
