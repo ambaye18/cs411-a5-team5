@@ -4,7 +4,22 @@ import json, requests, spotipy, random
 from geopy.geocoders import Nominatim
 from datetime import datetime
 import config
-    
+
+def load_creds():
+    # initializing global vars to be used throughout
+    global WEATHER_KEY
+    global USERNAME
+    global CLIENT_ID
+    global CLIENT_SECRET
+
+    # reading credentials from json (should be made manually from developer/server end)
+    with open('config.json') as f:
+        creds = json.load(f)
+    WEATHER_KEY = creds['WEATHER_KEY']
+    USERNAME = creds['USERNAME']
+    CLIENT_ID = creds['CLIENT_ID']
+    CLIENT_SECRET = creds['CLIENT_SECRET']
+
 def get_weather(location):
     # finding longitude and latitude based on passed in location
     geolocator = Nominatim(user_agent="411project")
@@ -14,7 +29,7 @@ def get_weather(location):
 
     try:
         # making call to openweather api
-        url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&units=imperial&exclude=hourly,daily,minutely,alerts&APPID=' + config.WEATHER_KEY
+        url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&units=imperial&exclude=hourly,daily,minutely,alerts&APPID=' + WEATHER_KEY
         resp = requests.get(url).json()['current']
         print(resp)
     except:
@@ -86,8 +101,8 @@ def sentiment(weather):
     return (normalized_temp + id_valence) / 2
 
 def gen_playlist(sentiment, location):
-    # authorizing spotipy client
-    token = spotipy.util.prompt_for_user_token(config.SPOTIFY_USERNAME, scope='playlist-modify-public', client_id=config.SPOTIFY_CLIENT_ID, client_secret=config.SPOTIFY_CLIENT_SECRET, redirect_uri='https://127.0.0.1')
+    # authorizing spotify client
+    token = spotipy.util.prompt_for_user_token(USERNAME, scope='playlist-modify-public', client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri='https://127.0.0.1')
     cli = spotipy.Spotify(auth=token)
 
     # creating playlist -> title is based on location + time to prevent same name conflicts

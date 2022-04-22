@@ -1,6 +1,6 @@
 import json
 from flask_cors import CORS, cross_origin
-from api_calls import get_weather, sentiment, gen_playlist
+from api_calls import get_weather, sentiment, gen_playlist, load_creds
 from flask import Flask, jsonify, abort, redirect
 from flask.wrappers import Response
 from flask.globals import request, session
@@ -152,6 +152,7 @@ def not_found(e):
 @app.route('/api/search/<location>', methods=['GET'])
 # @cross_origin(supports_credentials=True, allow_headers=['Content-Type'])
 def search(location):
+    load_creds()
     print(location)
     weather = get_weather(location)
     if weather == 'INVALID':
