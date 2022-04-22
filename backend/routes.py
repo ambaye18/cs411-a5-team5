@@ -12,12 +12,15 @@ from google_auth_oauthlib.flow import Flow
 import google.auth.transport.requests
 import config
 import jwt
+from flaskext.mysql import MySQL
 
 app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
 CORS(app)
 app.config['Access-Control-Allow-Origin'] = '*'
 app.config["Access-Control-Allow-Headers"]=["Authorization", "Content-Type"]
 app.secret_key = config.APP_SECRET
+mysql = MySQL()
+conn = mysql.connect()
 
 ## GOOGLE AUTHENTICATION ##
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -70,6 +73,9 @@ def callback():
     
     jwt_token=Generate_JWT(id_info)
     # TODO: insert id_info into db for session user
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Users (name, email) VALUES ('{0}', '{1}')".format(session["name"], session["email"]))
+    conn.commit()
 
     # redirect to frontend after successful login
     # send jwt token (encrypted id_info) to be saved to local storage for the session

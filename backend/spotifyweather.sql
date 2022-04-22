@@ -5,13 +5,14 @@ DROP TABLE IF EXISTS Playlists CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
 
 CREATE TABLE Users (
-    user_id INT NOT NULL PRIMARY KEY,
+    user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
+    password VARCHAR(50)
     );
     
 CREATE TABLE Playlists (
-    playlist_id INT NOT NULL PRIMARY KEY,
+    playlist_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id)
 	REFERENCES Users (user_id)
