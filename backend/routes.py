@@ -29,6 +29,31 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 conn = mysql.connect()
 
+# DATABASE INSERTION AND EXTRACTION
+
+# Not sure about the structure of these or how to test them
+# So I'm just leaving the first one to verify that I'm doing it correctly
+# The rest should be easy to add once we're sure exactly how to insert/extract
+
+# Insertion for user info
+def db_insert_user_info(id, em, pw):
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO USERS (userid, email, password) VALUES (%s, %s, %s)', (id, em, pw))
+    conn.commit()
+    cursor.close()
+
+# Insertion for user playlists
+def db_insert_playlist(plid, userid, link, loc, temp, wcond, sent):
+    pass
+
+# Extraction for user info
+def db_extract_user_info(userid):
+    pass
+
+# Extraction for playlists
+def db_extract_user_playlists(userid):
+    pass
+
 ## GOOGLE AUTHENTICATION ##
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID
