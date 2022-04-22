@@ -1,4 +1,5 @@
 config.py
+config.json
 client_secret.json
 ws/
 __pycache__/
