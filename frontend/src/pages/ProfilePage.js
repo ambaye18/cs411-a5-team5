@@ -40,7 +40,7 @@ export default function Profile(props) {
 
   return (
     <div>
-      <h1 className='pageTitle'>Profile</h1>
+      <h1 className='info'>Profile</h1>
       {auth ?
       <div className='profile'>
         <div className='profile-img'>
