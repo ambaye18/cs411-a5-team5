@@ -3,6 +3,7 @@
 import json, requests, spotipy, random
 from geopy.geocoders import Nominatim
 from datetime import datetime
+import config
 
 def load_creds():
     # initializing global vars to be used throughout
@@ -11,7 +12,7 @@ def load_creds():
     global CLIENT_ID
     global CLIENT_SECRET
 
-    # reading credentials from config.json (should be made manually from developer/server end)
+    # reading credentials from json (should be made manually from developer/server end)
     with open('config.json') as f:
         creds = json.load(f)
     WEATHER_KEY = creds['WEATHER_KEY']
@@ -20,13 +21,13 @@ def load_creds():
     CLIENT_SECRET = creds['CLIENT_SECRET']
     
 def get_weather(location):
-    # finding longitude and latitude based on passed in location
-    geolocator = Nominatim(user_agent="411project")
-    location_details = geolocator.geocode(location)
-    latitude = str(location_details.latitude)
-    longitude = str(location_details.longitude)
-
     try:
+         # finding longitude and latitude based on passed in location
+        geolocator = Nominatim(user_agent="411project")
+        location_details = geolocator.geocode(location)
+        latitude = str(location_details.latitude)
+        longitude = str(location_details.longitude)
+
         # making call to openweather api
         url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&units=imperial&exclude=hourly,daily,minutely,alerts&APPID=' + WEATHER_KEY
         resp = requests.get(url).json()['current']

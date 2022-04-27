@@ -13,8 +13,6 @@ export default function UserForm() {
         setData({location:null,weather:null,sentiment:null,playlist:null});
         setLoading(true);
         e.preventDefault();
-        // This API call is currently failing due to CORS cross-origin issue
-        // add response headers to fix this?
         axios.get('http://127.0.0.1:5000/api/search/' + location,
             {
             mode: 'no-cors',
@@ -24,13 +22,15 @@ export default function UserForm() {
                 'Content-Type':'application/json'
             },
         }).then(resp => {
+            console.log(resp.data);
+            // setting resp data in this component for now, but
+            // data will be passed to WeatherResult component in the future
             setData({location:resp.data.location,
                 weather:resp.data.weather[1]+'°F',
                 sentiment: Math.round(100*resp.data.sentiment)/100,
                 playlist:resp.data.playlist});
             setLoading(false);
 
-            console.log(resp.data);
         })
         .catch(err => console.log(err));
     }
@@ -39,11 +39,11 @@ export default function UserForm() {
         <div className="form">
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formLocation">
-                    <Form.Label>Enter a location</Form.Label>
+                    <Form.Label>Enter a location:</Form.Label>
                     <Form.Control className="formInput" required type="text" placeholder="e.g., Boston" value={location} onChange={(e) => setLocation(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="formSubmit" className="btnSubmit">
-                    <Form.Control type="submit" value="Submit"/>
+                    <Form.Control type="submit" value="Submit" className="btnChild"/>
                 </Form.Group>
 
             </Form>

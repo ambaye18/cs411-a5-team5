@@ -1,17 +1,70 @@
+/** UserForm **/
 .form {
-    width: 50vw;
+    font-family: 'Overpass', sans-serif;
+    font-size: 20px;
+    width: 60vw;
     margin: 0 auto;
     margin-top: 5vh;
     padding-top: 2vh;
     padding-bottom: 1vh;
     padding-left: 3%;
     padding-right: 3%;
-    border: 1px solid rgb(55, 55, 55);
+    border: 2px solid rgb(55, 55, 55);
     border-radius: 5px;
 }
 
 .btnSubmit {
-    width: 50%;
+    width: 40%;
     margin: 0 auto;
     margin-top: 3vh;
+}
+
+.btnChild {
+    background-color: white;
+    transition: .3s;
+    border: 2px solid #355c7d;
+    border-radius: 5px;
+    font-family: 'Overpass', sans-serif;
+    padding-top: 10px;
+    font-size: 17px;
+}
+
+.btnChild:hover {
+    background-color: #355c7d;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+}
+
+.formInput {
+    border: 2px solid #355c7d;
+    border-radius: 5px;
+}
+
+/** Navbar **/
+a.nav-link {
+    color: rgb(255, 255, 255) !important;
+    display:inline-table;
+}
+
+a.navbar-brand {
+    color: rgb(255, 255, 255) !important;
+    margin-right: 1%;
+}
+
+.navContainer {
+    margin-left: 0;
+    font-size: 30px;
+    margin-top: 0;
+}
+.navIcon {
+    margin-right: 2%;
+    font-size: 27px;
+    display:inline;
+    color: #355c7d;
+    transition: 0.2s;
+}
+
+.navIcon:hover {
+    color: white;
 }
