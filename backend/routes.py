@@ -62,12 +62,12 @@ def callback():
         id_token=credentials._id_token, request=token_request,
         audience=GOOGLE_CLIENT_ID
     )
+    del id_info['aud']
     session["google_id"] = id_info.get("sub")
     session["email"] = id_info.get("email")
     session["name"] = id_info.get("name")
     session["picture"] = id_info.get("picture")
     print(session)
-    
     jwt_token=Generate_JWT(id_info)
     # TODO: insert id_info into db for session user
 
@@ -78,7 +78,7 @@ def callback():
 # this endpoint is called when the user clicks login button on frontend
 # it returns a redirect url to authenticate with google
 @app.route("/auth/google", methods=["GET"])
-# @cross_origin(supports_credentials=True, allow_headers=['Content-Type'])
+@cross_origin(supports_credentials=True, allow_headers=['Content-Type'])
 def login():
     authorization_url, state = flow.authorization_url()
     # Store the state so the callback can verify the auth server response.
@@ -106,7 +106,7 @@ def logout():
 # that was previously encrypted using JWT, then send to client)
 @app.route("/user")
 @login_required
-# @cross_origin(supports_credentials=True, allow_headers=['Content-Type', 'Authorization'])
+@cross_origin(supports_credentials=True, allow_headers=['Content-Type', 'Authorization'])
 def home_page_user():
     encoded_jwt=request.headers.get("Authorization").split("Bearer ")[1]
     try:
@@ -130,7 +130,7 @@ def home_page_user():
 @app.route("/protected")
 @login_required
 def protected():
-    return jsonify({"id": session["google_id"], "name": session["name"]})
+    return jsonify({"id": session["google_id"], "name": session["name"], "email": session["email"], "picture": session["picture"]})
 
 # test route
 @app.route('/')
@@ -144,7 +144,7 @@ def not_found(e):
 
 # Weather search endpoint, only available if logged in
 @app.route('/api/search/<location>', methods=['GET'])
-# @cross_origin(supports_credentials=True, allow_headers=['Content-Type'])
+@cross_origin(supports_credentials=True, allow_headers=['Content-Type'])
 def search(location):
     load_creds()
     print(location)

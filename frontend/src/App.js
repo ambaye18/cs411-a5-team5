@@ -11,7 +11,8 @@ import axios from 'axios';
 
 // React front-end source: https://towardsdatascience.com/build-deploy-a-react-flask-app-47a89a5d17d9
 function App() {
-  // const [user, setUser]=useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken]=useState(null);
   const navigate=useNavigate()
 
   const handleLogin = (e) => {
@@ -32,6 +33,34 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  const fetchUserProfile = () => {
+    const userData = {};
+    const jwt_key=localStorage.getItem('JWT');
+    axios.get(`http://127.0.0.1:5000/user`,
+      {
+        mode: 'no-cors',
+        method: 'GET',
+        origin: 'http://127.0.0.1:3000',
+        headers : {
+            Authorization: `Bearer ${jwt_key}`,
+            'Content-Type':'application/json'
+        }
+      })
+      .then((res) => {
+        userData.name=res.data.name;
+        userData.email=res.data.email;
+        userData.picture=res.data.picture;
+        // setUser(res.data);
+      })
+      .catch((err) => console.log(err));
+    return userData;
+  };
+
+  const handleLogout=()=>{
+    localStorage.removeItem('JWT')
+    return navigate("/")
+  }
+
   useEffect(()=>{
     // once user has logged in, a JWT token will be saved in local storage
     // when set, redirect to user's profile page
@@ -40,21 +69,25 @@ function App() {
       const token=query.get('jwt')
       if(token){
         localStorage.setItem('JWT',token);
-        return navigate('/profile');
+        setToken(token);
+        // return navigate('/search');
       }
+    } else {
+      setToken(localStorage.getItem('JWT'));
     }
-  })
+  },[])
 
   return (
     <div className="App">
       <NavBar/>
         <Routes>
-            <Route exact path="/" element={<LandingPage login={handleLogin}/>} />
+            <Route exact path="/" element={<LandingPage login={handleLogin} logout={handleLogout} fetchUser={fetchUserProfile}/>} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/profile" element={<ProfilePage/>} />
+            <Route path="/profile" element={<ProfilePage fetchUser={fetchUserProfile}/>} />
             <Route path="*" exact={true} element={<PageNotFound/>} />
         </Routes>
     </div>
+
   );
 }
 
