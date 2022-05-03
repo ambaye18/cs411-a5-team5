@@ -39,11 +39,11 @@ export default function UserForm() {
         <div className="form">
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formLocation">
-                    <Form.Label>Enter a location</Form.Label>
+                    <Form.Label>Enter a location:</Form.Label>
                     <Form.Control className="formInput" required type="text" placeholder="e.g., Boston" value={location} onChange={(e) => setLocation(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="formSubmit" className="btnSubmit">
-                    <Form.Control type="submit" value="Submit"/>
+                    <Form.Control type="submit" value="Submit" className="btnChild"/>
                 </Form.Group>
 
             </Form>

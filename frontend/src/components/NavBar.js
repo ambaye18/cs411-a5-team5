@@ -6,12 +6,11 @@ import {FaRegUserCircle} from 'react-icons/fa';
 
 export default function NavBar() {
     return (
-        <Navbar bg="dark">
+        <Navbar bg="none">
             <Container className="navContainer">
-                <Navbar.Brand href="/"><WiDayStormShowers className="navIcon"/>Weather-Playlist Generator</Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="/search"><FaSearchLocation className="navIcon"/>Search</Nav.Link>
-                    <Nav.Link href="/profile"><FaRegUserCircle className='navIcon'/>Profile</Nav.Link>
+                    <Nav.Link href="/search"><FaSearchLocation className="navIcon"/></Nav.Link>
+                    <Nav.Link href="/profile"><FaRegUserCircle className='navIcon'/></Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
