@@ -15,7 +15,7 @@ CREATE TABLE Playlists (
     playlist_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(50) NOT NULL,
     FOREIGN KEY (email)
-	REFERENCES Users (email)
+        REFERENCES Users (email)
         ON DELETE CASCADE,
     link VARCHAR(255) NOT NULL,
     location VARCHAR(255),
