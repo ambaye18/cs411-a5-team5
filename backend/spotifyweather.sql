@@ -24,6 +24,6 @@ CREATE TABLE Playlists (
     sentiment FLOAT
     );
     
--- INSERT INTO Users (user_id, email, password) VALUES (1, "tuckman@bu.edu", "spotify");
--- INSERT INTO Playlists (playlist_id, user_id, link) VALUES (1, 1, "google.com");
+-- INSERT INTO Users (email, name) VALUES ("tuckman@bu.edu", "Andrew");
+-- INSERT INTO Playlists (email, link) VALUES ("tuckman@bu.edu", "google.com");
     

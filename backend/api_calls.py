@@ -101,7 +101,7 @@ def sentiment(weather):
     return (normalized_temp + id_valence) / 2
 
 def gen_playlist(sentiment, location):
-    # authorizing spotipy client
+    # authorizing spotify client
     token = spotipy.util.prompt_for_user_token(USERNAME, scope='playlist-modify-public', client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri='https://127.0.0.1')
     cli = spotipy.Spotify(auth=token)
 
