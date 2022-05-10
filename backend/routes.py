@@ -14,49 +14,73 @@ import config
 import jwt
 from flaskext.mysql import MySQL
 
+# f = open('config.json', 'r')
+# config = json.load(f)
+
 app = Flask(__name__, static_folder='../frontend/build/static', template_folder='../frontend/build')
 CORS(app)
 app.config['Access-Control-Allow-Origin'] = '*'
 app.config["Access-Control-Allow-Headers"]=["Authorization", "Content-Type"]
 app.secret_key = config.APP_SECRET
+# app.secret_key = config["APP_SECRET"]
 
+## DATABASE PREP ##
 mysql = MySQL()
-#These will need to be changed according to your creditionals
+# These will need to be changed according to your creditionals
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'password' # change this to your MySQL password
+app.config['MYSQL_DATABASE_PASSWORD'] = config["MYSQL_PASSWORD"] # change this to your MySQL password
 app.config['MYSQL_DATABASE_DB'] = 'spotifyweather'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 conn = mysql.connect()
 
-# DATABASE INSERTION AND EXTRACTION
+# add guest user to db
+cursor = conn.cursor()
+cursor.execute("INSERT INTO Users (email, name) VALUES ('{0}', '{1}') ON DUPLICATE KEY UPDATE name = '{1}'".format("guest@gmail.com", "Guest"))
+conn.commit()
 
-# Not sure about the structure of these or how to test them
-# So I'm just leaving the first one to verify that I'm doing it correctly
-# The rest should be easy to add once we're sure exactly how to insert/extract
-
+# Database functions
 # Insertion for user info
-def db_insert_user_info(id, em, pw):
+def db_insert_user_info(email, name):
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO USERS (userid, email, password) VALUES (%s, %s, %s)', (id, em, pw))
+    cursor.execute("INSERT INTO Users (email, name) VALUES ('{0}', '{1}') ON DUPLICATE KEY UPDATE name = '{1}'".format(email, name))
     conn.commit()
-    cursor.close()
+    # cursor.close()
 
 # Insertion for user playlists
-def db_insert_playlist(plid, userid, link, loc, temp, wcond, sent):
-    pass
+def db_insert_playlist(email, link, loc = "", temp = 0.0, wcond = "", sent = 0.0):
+    cursor = conn.cursor()
+    if loc == "" and temp == 0 and wcond == "" and sent == 0:
+        cursor.execute("INSERT INTO Playlists (email, link) VALUES ('{0}', '{1}')".format(email, link))
+    else:
+        cursor.execute("INSERT INTO Playlists (email, link, location, temp, weather_condition, sentiment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(email, link, loc, temp, wcond, sent))
+    conn.commit()
 
-# Extraction for user info
-def db_extract_user_info(userid):
-    pass
+# Extraction for user info by user email
+def db_extract_user_info(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM Users WHERE email = '{0}'".format(email))
+    name = cursor.fetchall()
+    return name
 
-# Extraction for playlists
-def db_extract_user_playlists(userid):
-    pass
+# Extraction for playlists by user email
+def db_extract_user_playlists(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT link FROM Playlists WHERE email = '{0}'".format(email))
+    links = cursor.fetchall() # list of all links associated with user email 
+    return links
+
+# set global variable for current user email, not sure if this is best way
+def set_current_user(email):
+    global USER_EMAIL
+    USER_EMAIL = email
+
+## END OF DATABASE PREP ##
 
 ## GOOGLE AUTHENTICATION ##
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_ID = config["GOOGLE_CLIENT_ID"]
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
@@ -104,10 +128,10 @@ def callback():
     session["picture"] = id_info.get("picture")
     print(session)
     jwt_token=Generate_JWT(id_info)
+
     # insert id_info into db for session user
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO Users (name, email) VALUES ('{0}', '{1}')".format(session["name"], session["email"]))
-    conn.commit()
+    set_current_user(session["email"])
+    db_insert_user_info(session["email"], session["name"])
 
     # redirect to frontend after successful login
     # send jwt token (encrypted id_info) to be saved to local storage for the session
@@ -193,6 +217,10 @@ def search(location):
         sentiment_val = sentiment(weather)
         playlist = gen_playlist(sentiment_val, location)
         print("Weather: " + str(weather))
+
+        # add playlist to db
+        db_insert_playlist(USER_EMAIL, playlist)
+
         return jsonify({'message' : 'Success', 'location' : location, 'weather' : weather, 'sentiment' : sentiment_val, 'playlist' : playlist})
 
 if __name__ == "__main__":
